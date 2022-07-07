@@ -7,11 +7,14 @@ RSpec.describe "Api::V1::RegistrationsController", type: :request do
         account: {
           name: account_name,
           from_partner: true,
-          users: [{
-            email: user_email,
-            first_name: Faker::Name.female_first_name,
-            last_name: Faker::Name.last_name,
-            phone: Faker::PhoneNumber.cell_phone,
+          entities: [{
+            name: Faker::Company.name,
+            users: [{
+              email: user_email,
+              first_name: Faker::Name.female_first_name,
+              last_name: Faker::Name.last_name,
+              phone: Faker::PhoneNumber.cell_phone,
+            }],
           }],
         },
       }

@@ -5,12 +5,17 @@ RSpec.describe CreateAccount do
     let(:payload) do
       {
         name: name,
-        users: [
+        entities: [
           {
-            first_name: Faker::Name.first_name,
-            last_name: Faker::Name.last_name,
-            email: Faker::Internet.email,
-            phone: "(11) 97111-0101",
+            name: Faker::Company.name,
+            users: [
+              {
+                first_name: Faker::Name.first_name,
+                last_name: Faker::Name.last_name,
+                email: Faker::Internet.email,
+                phone: "(11) 97111-0101",
+              },
+            ],
           },
         ],
       }
