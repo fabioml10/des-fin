@@ -3,6 +3,9 @@ RSpec.describe CreateRegistration do
     subject(:call) { described_class.call(payload) }
 
     let(:fake_result) { ApplicationService::Result.new(true) }
+    let(:notify_partner_double) { instance_double(NotifyPartner) }
+
+    before { allow(NotifyPartner).to receive(:new).and_return(notify_partner_double) }
 
     context "when account is from partner" do
       let(:payload) do
@@ -19,12 +22,13 @@ RSpec.describe CreateRegistration do
                 phone: "(11) 97111-0101",
               },
             ],
-          ]
+          ],
         }
       end
 
-      it "calls CreateAccountAndNotifyPartner service" do
-        expect(CreateAccountAndNotifyPartner).to receive(:call).with(payload).and_return(fake_result)
+      it "calls CreateAccount and NotifyPartner service" do
+        expect(CreateAccount).to receive(:call).with(payload)
+        expect(notify_partner_double).to receive(:perform)
 
         call
       end
@@ -47,13 +51,14 @@ RSpec.describe CreateRegistration do
                   phone: "(11) 97111-0101",
                 },
               ],
-            }
-          ]
+            },
+          ],
         }
       end
 
-      it "calls CreateAccountAndNotifyPartner service" do
-        expect(CreateAccountAndNotifyPartners).to receive(:call).with(payload).and_return(fake_result)
+      it "calls CreateAccount and NotifyPartners service" do
+        expect(CreateAccount).to receive(:call).with(payload)
+        expect(NotifyPartners).to receive(:call).and_return(fake_result)
 
         call
       end
@@ -81,6 +86,7 @@ RSpec.describe CreateRegistration do
 
       it "calls CreateAccount service" do
         expect(CreateAccount).to receive(:call).with(payload).and_return(fake_result)
+        expect(NotifyPartners).not_to receive(:call)
 
         call
       end

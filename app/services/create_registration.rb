@@ -1,41 +1,32 @@
 class CreateRegistration < ApplicationService
   def initialize(payload)
     @payload = payload
+    @result = nil
   end
 
   def call
-    if @payload[:from_partner] == true && @payload[:many_partners] == true
-      @result = create_account_and_notify_partners
-    elsif @payload[:from_partner] == true
-      @result = create_account_and_notify_partner
-    else
-      @result = create_account
-    end
-
-    return Result.new(true, @result.data) if @result.success?
-
+    create_account
+    notify_partner_or_partners
     @result
   end
 
   private
 
-  def create_account_and_notify_partner
-    CreateAccountAndNotifyPartner.call(@payload)
-  end
-
-  def create_account_and_notify_partners
-    CreateAccountAndNotifyPartners.call(@payload)
-  end
-
   def create_account
-    if @payload[:name].include?("Fintera") && fintera_users
-      CreateAccount.call(@payload)
-    else
-      CreateAccount.call(@payload)
-    end
+    @result = CreateAccount.call(@payload)
   end
 
-  def fintera_users
-    @payload[:entities].any? { |entity| entity[:users].any? { |user| user[:email]&.include? "fintera.com.br" } }
+  def notify_partner_or_partners
+    return unless from_partner?
+
+    many_partners? ? NotifyPartners.call : NotifyPartner.new.perform
+  end
+
+  def from_partner?
+    @payload[:from_partner] == true
+  end
+
+  def many_partners?
+    @payload[:many_partners] == true
   end
 end
