@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_07_155557) do
+ActiveRecord::Schema.define(version: 2022_07_07_160337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,15 +48,12 @@ ActiveRecord::Schema.define(version: 2022_07_07_155557) do
     t.string "email", null: false
     t.string "phone", null: false
     t.datetime "confirmed_at"
-    t.bigint "account_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "entities", "accounts"
   add_foreign_key "entities_users", "entities"
   add_foreign_key "entities_users", "users"
-  add_foreign_key "users", "accounts"
 end
