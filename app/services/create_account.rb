@@ -10,7 +10,7 @@ class CreateAccount < ApplicationService
     return @result unless @errors.empty?
 
     build_account
-    build_users
+    build_entities_and_users
     account_save
   end
 
@@ -32,9 +32,20 @@ class CreateAccount < ApplicationService
       active: @from_fintera, }
   end
 
-  def build_users
-    @payload[:users].each do |user|
-      @account.users.build(user_params(user))
+  def build_entities_and_users
+    @payload[:entities].each do |entity|
+      builded_entity = @account.entities.build(entity_params(entity))
+      build_users(builded_entity, entity[:users])
+    end
+  end
+
+  def entity_params(entity)
+    { name: entity[:name] }
+  end
+
+  def build_users(entity, users)
+    users.each do |user|
+      entity.users.build(user_params(user))
     end
   end
 

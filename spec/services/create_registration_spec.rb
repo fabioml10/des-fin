@@ -9,14 +9,17 @@ RSpec.describe CreateRegistration do
         {
           name: Faker::Company.name,
           from_partner: true,
-          users: [
-            {
-              first_name: Faker::Name.first_name,
-              last_name: Faker::Name.last_name,
-              email: Faker::Internet.email,
-              phone: "(11) 97111-0101",
-            },
-          ],
+          entities: [
+            name: Faker::Company.name,
+            users: [
+              {
+                first_name: Faker::Name.first_name,
+                last_name: Faker::Name.last_name,
+                email: Faker::Internet.email,
+                phone: "(11) 97111-0101",
+              },
+            ],
+          ]
         }
       end
 
@@ -33,14 +36,19 @@ RSpec.describe CreateRegistration do
           name: Faker::Company.name,
           from_partner: true,
           many_partners: true,
-          users: [
+          entities: [
             {
-              first_name: Faker::Name.first_name,
-              last_name: Faker::Name.last_name,
-              email: Faker::Internet.email,
-              phone: "(11) 97111-0101",
-            },
-          ],
+              name: Faker::Company.name,
+              users: [
+                {
+                  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
+                  email: Faker::Internet.email,
+                  phone: "(11) 97111-0101",
+                },
+              ],
+            }
+          ]
         }
       end
 
@@ -55,12 +63,17 @@ RSpec.describe CreateRegistration do
       let(:payload) do
         {
           name: "Fintera - #{Faker::Company.name}",
-          users: [
+          entities: [
             {
-              first_name: Faker::Name.first_name,
-              last_name: Faker::Name.last_name,
-              email: Faker::Internet.email,
-              phone: "(11) 97111-0101",
+              name: Faker::Company.name,
+              users: [
+                {
+                  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
+                  email: Faker::Internet.email,
+                  phone: "(11) 97111-0101",
+                },
+              ],
             },
           ],
         }
