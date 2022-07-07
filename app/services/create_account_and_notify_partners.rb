@@ -4,7 +4,7 @@ class CreateAccountAndNotifyPartners < ApplicationService
   end
 
   def call
-    result = CreateAccount.call(@params, is_from_fintera?)
+    result = CreateAccount.call(@params)
     NotifyPartner.new.perform
     NotifyPartner.new("another").perform
 

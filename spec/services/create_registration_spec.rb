@@ -80,7 +80,7 @@ RSpec.describe CreateRegistration do
       end
 
       it "calls CreateAccount service" do
-        expect(CreateAccount).to receive(:call).with(payload, false).and_return(fake_result)
+        expect(CreateAccount).to receive(:call).with(payload).and_return(fake_result)
 
         call
       end

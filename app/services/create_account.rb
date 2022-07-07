@@ -1,7 +1,9 @@
 class CreateAccount < ApplicationService
-  def initialize(payload, from_fintera = false)
+  FINTERA_NAME = "Fintera".freeze
+  FINTERA_DOMAIN = "fintera.com.br".freeze
+
+  def initialize(payload)
     @payload = payload
-    @from_fintera = from_fintera
     @errors = []
   end
 
@@ -29,7 +31,7 @@ class CreateAccount < ApplicationService
 
   def account_params
     { name: @payload[:name],
-      active: @from_fintera, }
+      active: from_fintera?, }
   end
 
   def build_entities_and_users
@@ -60,5 +62,17 @@ class CreateAccount < ApplicationService
                 @errors << @account.errors.full_messages
                 Result.new(false, nil, @errors.join(","))
               end
+  end
+
+  def from_fintera?
+    fintera_name? && any_fintera_user?
+  end
+
+  def fintera_name?
+    @payload[:name]&.include? FINTERA_NAME
+  end
+
+  def any_fintera_user?
+    @payload[:entities].any? { |entity| entity[:users].any? { |user| user[:email]&.include? FINTERA_DOMAIN } }
   end
 end
