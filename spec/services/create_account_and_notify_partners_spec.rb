@@ -11,7 +11,7 @@ RSpec.describe CreateAccountAndNotifyPartners do
       let(:users) { [{ email: Faker::Internet.email(domain: "fintera.com.br") }] }
 
       it "creates a new account and notifies partner" do
-        expect(CreateAccount).to receive(:call).with(params, true)
+        expect(CreateAccount).to receive(:call).with(params)
         expect(notify_partner_double).to receive(:perform).twice
 
         call
@@ -22,7 +22,7 @@ RSpec.describe CreateAccountAndNotifyPartners do
       let(:users) { [{ email: Faker::Internet.email(domain: "example.com") }] }
 
       it "creates a new account and notifies partner" do
-        expect(CreateAccount).to receive(:call).with(params, false)
+        expect(CreateAccount).to receive(:call).with(params)
         expect(notify_partner_double).to receive(:perform).twice
 
         call

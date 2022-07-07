@@ -29,9 +29,9 @@ class CreateRegistration < ApplicationService
 
   def create_account
     if @payload[:name].include?("Fintera") && fintera_users
-      CreateAccount.call(@payload, true)
+      CreateAccount.call(@payload)
     else
-      CreateAccount.call(@payload, false)
+      CreateAccount.call(@payload)
     end
   end
 
