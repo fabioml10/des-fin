@@ -7,6 +7,7 @@ class CreateAccount < ApplicationService
 
   def call
     validate_account
+    validate_users
     return @result unless @errors.empty?
 
     build_account
@@ -20,6 +21,13 @@ class CreateAccount < ApplicationService
     return if @payload.present?
 
     @errors << "Account is not valid"
+    @result = Result.new(false, nil, @errors.join(","))
+  end
+
+  def validate_users
+    return unless @payload[:users] && @payload[:users].empty?
+
+    @errors << "Users can't be blank"
     @result = Result.new(false, nil, @errors.join(","))
   end
 
